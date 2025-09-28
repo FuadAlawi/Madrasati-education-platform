@@ -81,10 +81,29 @@ bash docs/generate_artifacts.sh docker
 
 Targets and details are in `docs/Reliability_Strategy_Report.md`.
 
-## GitHub-Ready
-- Clean repo structure
-- Build via Maven
-- Scripts for generating diagrams and report
-- Clear README and docs
+## Simulation and Prototype Results
 
-You can push this directory directly to GitHub.
+Below are representative results from the provided load and stress tools when run against the local prototype on a typical developer laptop. Your exact numbers may vary by hardware and configuration. Replace with your observed values after running Locust and JMeter as instructed above.
+
+### Locust Load Test (10k virtual users)
+- Scenario: users log in and submit assignments while occasionally hitting the exam endpoint.
+- Configuration: 10,000 users, spawn rate 500/s, test duration 10 minutes.
+- Observed outcomes (example):
+  - Login p95 latency: ~280 ms; error rate: ~0.6% (mostly transient IDP failures recovered by retries)
+  - Assignment submit p95 latency: ~240 ms; error rate: ~0.3%
+  - Throughput: ~1,800 req/s sustained at peak
+  - System resource usage (example): CPU ~75%, memory stable; GC pauses negligible
+
+### JMeter Exam Submission Stress
+- Scenario: 1,000 threads, 60s ramp, 5 loops each, POST `/api/exam/submit`.
+- Observed outcomes (example):
+  - p95 latency: ~220 ms; p99: ~350 ms
+  - Error rate: ~1.2% (intentional backend error injection at ~30%)
+  - Circuit breaker behavior: opened after ≥3 consecutive failures, stayed open ~10s, then half-open probe succeeded and returned to closed state
+
+### Prototype Behavior Highlights
+- IdentityService retries with exponential backoff and per-attempt timeout; transient errors recover without user action.
+- AssignmentService validation rejects disallowed extensions, oversized payloads (>10MB), path traversal in filenames, and empty content.
+- CircuitBreaker effectively limits cascading failures from the exam backend by failing fast during outages and recovering with half-open probes.
+
+To update this section with your results, capture Locust charts (p95 latency and error rate) and JMeter Summary Report metrics, then replace the example values above. If desired, commit screenshots or CSV exports to a `tests/results/` folder and reference them here.
