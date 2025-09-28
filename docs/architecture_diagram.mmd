@@ -1,0 +1,51 @@
+---
+title: Madrasati Cloud Microservices Architecture
+---
+flowchart TB
+  subgraph Client Layer
+    A[Web Browser]
+    B[Mobile App]
+  end
+
+  subgraph Application Layer
+    APIGW[API Gateway]
+    AUTH[Identity Service]
+    ASSIGN[Assignment Service]
+    EXAM[Exam Service]
+    NOTIF[Notification Service]
+  end
+
+  subgraph Data Layer
+    DB[(Relational DB)]
+    OBJ[(Object Storage)]
+    CACHE[(Redis Cache)]
+  end
+
+  subgraph Infrastructure Layer
+    LB[Load Balancer]
+    MON[Monitoring & Logging]
+    QUEUE[Message Broker]
+    CDN[CDN]
+  end
+
+  A -->|HTTPS| LB
+  B -->|HTTPS| LB
+  LB --> APIGW
+  APIGW --> AUTH
+  APIGW --> ASSIGN
+  APIGW --> EXAM
+  APIGW --> NOTIF
+
+  AUTH --> DB
+  ASSIGN --> DB
+  ASSIGN --> OBJ
+  EXAM --> DB
+  NOTIF --> QUEUE
+
+  APIGW --> CACHE
+  MON --- APIGW
+  MON --- AUTH
+  MON --- ASSIGN
+  MON --- EXAM
+  MON --- LB
+  CDN --- LB

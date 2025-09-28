@@ -1,0 +1,18 @@
+# Build
+/target/
+
+# IDE
+.idea/
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+
+# Test artifacts
+*.jtl
+
+# Docs outputs
+/docs/*.png
+/docs/*.pdf

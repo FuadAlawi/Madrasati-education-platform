@@ -1,0 +1,42 @@
+---
+title: Fault Tree - Platform unavailable during exam
+---
+flowchart TD
+  TOP([Platform unavailable during exam])
+
+  subgraph Network Issues
+    NET1[ISP outage]
+    NET2[Cloud region network failure]
+    NET3[DNS misconfiguration]
+  end
+
+  subgraph Application Issues
+    APP1[Exam service crash]
+    APP2[Deployment misconfiguration]
+    APP3[Resource exhaustion]
+  end
+
+  subgraph Data Issues
+    DATA1[Primary DB down]
+    DATA2[Deadlocks / contention]
+    DATA3[Corrupted schema migration]
+  end
+
+  subgraph Human Error
+    HUM1[Incorrect feature flag]
+    HUM2[Unauthorized change]
+    HUM3[Runbook not followed]
+  end
+
+  TOP --> NET1
+  TOP --> NET2
+  TOP --> NET3
+  TOP --> APP1
+  TOP --> APP2
+  TOP --> APP3
+  TOP --> DATA1
+  TOP --> DATA2
+  TOP --> DATA3
+  TOP --> HUM1
+  TOP --> HUM2
+  TOP --> HUM3
