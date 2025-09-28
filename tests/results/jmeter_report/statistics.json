@@ -1,0 +1,34 @@
+{
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 5000,
+    "errorCount" : 4927,
+    "errorPct" : 98.54,
+    "meanResTime" : 0.7440000000000014,
+    "medianResTime" : 1.0,
+    "minResTime" : 0.0,
+    "maxResTime" : 102.0,
+    "pct1ResTime" : 1.0,
+    "pct2ResTime" : 1.0,
+    "pct3ResTime" : 2.0,
+    "throughput" : 83.50591221858508,
+    "receivedKBytesPerSec" : 15.516344455624958,
+    "sentKBytesPerSec" : 15.412712313781816
+  },
+  "Submit Exam" : {
+    "transaction" : "Submit Exam",
+    "sampleCount" : 5000,
+    "errorCount" : 4927,
+    "errorPct" : 98.54,
+    "meanResTime" : 0.7440000000000014,
+    "medianResTime" : 1.0,
+    "minResTime" : 0.0,
+    "maxResTime" : 102.0,
+    "pct1ResTime" : 1.0,
+    "pct2ResTime" : 1.0,
+    "pct3ResTime" : 2.0,
+    "throughput" : 83.50591221858508,
+    "receivedKBytesPerSec" : 15.516344455624958,
+    "sentKBytesPerSec" : 15.412712313781816
+  }
+}

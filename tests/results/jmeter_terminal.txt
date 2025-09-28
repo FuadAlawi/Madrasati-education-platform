@@ -1,0 +1,15 @@
+WARN StatusConsoleListener The use of package scanning to locate plugins is deprecated and will be removed in a future release
+WARN StatusConsoleListener The use of package scanning to locate plugins is deprecated and will be removed in a future release
+WARN StatusConsoleListener The use of package scanning to locate plugins is deprecated and will be removed in a future release
+WARN StatusConsoleListener The use of package scanning to locate plugins is deprecated and will be removed in a future release
+Creating summariser <summary>
+Created the tree successfully using tests/jmeter_exam_submission.jmx
+Starting standalone test @ 2025 Sep 28 04:09:40 AST (1759021780906)
+Waiting for possible Shutdown/StopTestNow/HeapDump/ThreadDump message on port 4445
+summary +   1586 in 00:00:19 =   83.3/s Avg:     1 Min:     0 Max:   102 Err:  1570 (98.99%) Active: 1 Started: 318 Finished: 317
+summary +   2500 in 00:00:30 =   83.3/s Avg:     0 Min:     0 Max:     6 Err:  2472 (98.88%) Active: 1 Started: 818 Finished: 817
+summary =   4086 in 00:00:49 =   83.3/s Avg:     0 Min:     0 Max:   102 Err:  4042 (98.92%)
+summary +    914 in 00:00:11 =   83.7/s Avg:     0 Min:     0 Max:    13 Err:   885 (96.83%) Active: 0 Started: 1000 Finished: 1000
+summary =   5000 in 00:01:00 =   83.4/s Avg:     0 Min:     0 Max:   102 Err:  4927 (98.54%)
+Tidying up ...    @ 2025 Sep 28 04:10:40 AST (1759021840980)
+... end of run
