@@ -1,2 +1,0 @@
-Method,Name,Error,Occurrences
-POST,/api/exam/submit,HTTPError('503 Server Error:  for url: /api/exam/submit'),21085
