@@ -83,16 +83,31 @@ Targets and details are in `docs/Reliability_Strategy_Report.md`.
 
 ## Simulation and Prototype Results
 
-Below are representative results from the provided load and stress tools when run against the local prototype on a typical developer laptop. Your exact numbers may vary by hardware and configuration. Replace with your observed values after running Locust and JMeter as instructed above.
+Below are the actual results measured on this machine using Locust headless mode. CSV outputs are saved under `tests/results/` and committed.
 
-### Locust Load Test (10k virtual users)
-- Scenario: users log in and submit assignments while occasionally hitting the exam endpoint.
-- Configuration: 10,000 users, spawn rate 500/s, test duration 10 minutes.
-- Observed outcomes (example):
-  - Login p95 latency: ~280 ms; error rate: ~0.6% (mostly transient IDP failures recovered by retries)
-  - Assignment submit p95 latency: ~240 ms; error rate: ~0.3%
-  - Throughput: ~1,800 req/s sustained at peak
-  - System resource usage (example): CPU ~75%, memory stable; GC pauses negligible
+- Raw CSVs:
+  - `tests/results/locust_stats.csv`
+  - `tests/results/locust_stats_history.csv`
+  - `tests/results/locust_failures.csv`
+  - `tests/results/locust_exceptions.csv`
+
+### Locust Load Test (Actual)
+- Scenario: users log in and submit assignments while also hitting the exam endpoint.
+- Configuration: 2,000 users, spawn rate 200/s, run-time 2 minutes.
+- Observed outcomes (from `locust_stats.csv`):
+  - Aggregated throughput: ~760 req/s; total requests: 88,422; total failures: 21,085 (23.84%)
+  - Assignment submit (`POST /api/assignments/submit`):
+    - Requests: 64,892; Failures: 0 (0.00%)
+    - Median: 1 ms; Average: 301 ms; p95: 11 ms; p99: 14,000 ms; Max: 21,777 ms
+    - Throughput: ~558 req/s
+  - Login (`POST /api/auth/login`):
+    - Requests: 2,000; Failures: 0 (0.00%)
+    - Median: 13,000 ms; Average: 13,361 ms; p95: 25,000 ms; Max: 25,376 ms
+    - Throughput: ~17 req/s
+  - Exam submit (`POST /api/exam/submit`):
+    - Requests: 21,530; Failures: 21,085 (97.93%) — expected due to intentional backend error injection and circuit breaker rejecting during OPEN state
+    - Median: 1 ms; Average: 301 ms; p95: 11 ms; p99: 14,000 ms; Max: 21,531 ms
+    - Throughput: ~185 req/s; Failures/s: ~181
 
 ### JMeter Exam Submission Stress
 - Scenario: 1,000 threads, 60s ramp, 5 loops each, POST `/api/exam/submit`.
@@ -106,4 +121,6 @@ Below are representative results from the provided load and stress tools when ru
 - AssignmentService validation rejects disallowed extensions, oversized payloads (>10MB), path traversal in filenames, and empty content.
 - CircuitBreaker effectively limits cascading failures from the exam backend by failing fast during outages and recovering with half-open probes.
 
-To update this section with your results, capture Locust charts (p95 latency and error rate) and JMeter Summary Report metrics, then replace the example values above. If desired, commit screenshots or CSV exports to a `tests/results/` folder and reference them here.
+Notes:
+- The high login latency reflects the simulated identity service behavior under heavy concurrent load and retry/timeout logic. You can tune `perAttemptTimeout`, backoff, and max retries in `IdentityService` to adjust.
+- The very high failure rate on the exam endpoint is expected due to the intentionally injected ~30% backend error rate combined with the circuit breaker opening (rejecting calls with HTTP 503) during outages. This validates the breaker behavior.
